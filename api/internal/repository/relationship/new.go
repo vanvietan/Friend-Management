@@ -1,9 +1,14 @@
 package relationship
 
-import "gorm.io/gorm"
+import (
+	"context"
+	"fm/api/internal/models"
+	"gorm.io/gorm"
+)
 
 // Repository contains repository of relationship
 type Repository interface {
+	CreateRelationship(ctx context.Context, relationship models.Relationship) (models.Relationship, error)
 }
 type impl struct {
 	gormDB *gorm.DB

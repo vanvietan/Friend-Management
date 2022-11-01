@@ -1,9 +1,13 @@
 package relationship
 
-import "fm/api/internal/repository/relationship"
+import (
+	"context"
+	"fm/api/internal/repository/relationship"
+)
 
 // Service contains relationship services
 type Service interface {
+	AddFriend(ctx context.Context, requesterID int64, addresseeID int64) error
 }
 
 type impl struct {

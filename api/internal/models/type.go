@@ -3,7 +3,7 @@ package models
 type Type string
 
 const (
-	typeFriend     Type = "Friend"
-	typeBlocked    Type = "Blocked"
-	typeSubscribed Type = "Subscribed"
+	TypeFriend     Type = "Friend"
+	TypeBlocked    Type = "Blocked"
+	TypeSubscribed Type = "Subscribed"
 )
