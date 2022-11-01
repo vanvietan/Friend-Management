@@ -7,13 +7,15 @@ CREATE TABLE "users" (
 
 CREATE TABLE "relationship" (
                                 "id" bigint PRIMARY KEY NOT NULL,
-                                "requesterID" bigint NOT NULL,
-                                "addresseeID" bigint NOT NULL,
-                                "type" varchar(20),
+                                "requester_id" bigint NOT NULL,
+                                "addressee_id" bigint NOT NULL,
+                                "is_friend" boolean,
+                                "is_blocked" boolean,
+                                "is_subscribed" boolean,
                                 "created_at" timestamp,
                                 "updated_at" timestamp
 );
 
-ALTER TABLE "relationship" ADD FOREIGN KEY ("requesterID") REFERENCES "users" ("id");
+ALTER TABLE "relationship" ADD FOREIGN KEY ("requester_id") REFERENCES "users" ("id");
 
-ALTER TABLE "relationship" ADD FOREIGN KEY ("addresseeID") REFERENCES "users" ("id");
+ALTER TABLE "relationship" ADD FOREIGN KEY ("addressee_id") REFERENCES "users" ("id");
