@@ -6,7 +6,7 @@ import "time"
 type User struct {
 	ID           int64
 	Email        string
-	Relationship []Relationship
+	Relationship []Relationship `gorm:"foreignKey:AddresseeID, RequesterID"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

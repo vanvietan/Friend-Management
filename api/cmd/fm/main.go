@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fm/api/internal/api/config"
+	"fm/api/internal/config"
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	log "github.com/sirupsen/logrus"
