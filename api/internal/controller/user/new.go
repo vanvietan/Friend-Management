@@ -10,7 +10,7 @@ type impl struct {
 	userRepo user.Repository
 }
 
-// New DI
+// New
 func New(userRepo user.Repository) Service {
 	return impl{userRepo: userRepo}
 }

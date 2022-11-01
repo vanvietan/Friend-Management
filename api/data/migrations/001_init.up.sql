@@ -9,11 +9,10 @@ CREATE TABLE "relationship" (
                                 "id" bigint PRIMARY KEY NOT NULL,
                                 "requester_id" bigint NOT NULL,
                                 "addressee_id" bigint NOT NULL,
-                                "is_friend" boolean,
-                                "is_blocked" boolean,
-                                "is_subscribed" boolean,
+                                "type" varchar(20),
                                 "created_at" timestamp,
-                                "updated_at" timestamp
+                                "updated_at" timestamp,
+
 );
 
 ALTER TABLE "relationship" ADD FOREIGN KEY ("requester_id") REFERENCES "users" ("id");
