@@ -11,8 +11,7 @@ CREATE TABLE "relationship" (
                                 "addressee_id" bigint NOT NULL,
                                 "type" varchar(20),
                                 "created_at" timestamp,
-                                "updated_at" timestamp,
-
+                                "updated_at" timestamp
 );
 
 ALTER TABLE "relationship" ADD FOREIGN KEY ("requester_id") REFERENCES "users" ("id");
