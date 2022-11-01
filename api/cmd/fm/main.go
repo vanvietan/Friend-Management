@@ -28,7 +28,7 @@ func main() {
 	userRepository := userRepo.New(dbConn)
 	relationshipRepository := relationshipRepo.New(dbConn)
 	userService := userSvc.New(userRepository)
-	relationshipService := relationshipSvc.New(relationshipRepository)
+	relationshipService := relationshipSvc.New(relationshipRepository, userRepository)
 	router.New(r, userService, relationshipService)
 
 	fmt.Println("Serving on " + port)
