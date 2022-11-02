@@ -24,7 +24,7 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 	}
 	emailAddressee, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
 	if err != nil {
-		log.Printf("error when find email %v ", err)
+		log.Printf("error when find email, %v ", err)
 		return errors.New("can't find addressee email")
 	}
 	/*
@@ -32,8 +32,7 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 	*/
 	rela, err3 := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
 	if err3 != nil {
-		log.Printf("error when find relationship %v", err3)
-		return err3
+		log.Printf("error when find relationship, %v", err3)
 	}
 	if rela.Type == models.TypeBlocked {
 		return errors.New("requester is blocked")
