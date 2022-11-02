@@ -3,9 +3,7 @@ package config
 import (
 	"fmt"
 	"gorm.io/driver/postgres"
-	_ "gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	_ "gorm.io/gorm"
 	"time"
 )
 
@@ -24,6 +22,7 @@ func CreateDatabaseConnection() error {
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
+	//db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return err
 	}

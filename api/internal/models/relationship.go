@@ -1,6 +1,8 @@
 package models
 
-import "time"
+import (
+	"time"
+)
 
 // Relationship describes type of relationship
 type Relationship struct {
