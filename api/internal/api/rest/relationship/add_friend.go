@@ -16,9 +16,12 @@ func (h Handler) AddFriend(w http.ResponseWriter, r *http.Request) {
 	}
 	errS := h.RelationshipSvc.AddFriend(r.Context(), requestEmail, addressEmail)
 	if errS != nil {
-		common.ResponseJSON(w, http.StatusInternalServerError, common.InternalCommonErrorResponse)
+		common.ResponseJSON(w, http.StatusInternalServerError, common.CommonErrorResponse{
+			Code:        "internal_server_error",
+			Description: errS.Error(),
+		})
 		return
 	}
 
-	common.ResponseJSON(w, http.StatusOK, toFriendConnectionResponse)
+	common.ResponseJSON(w, http.StatusOK, toFriendConnectionResponse())
 }
