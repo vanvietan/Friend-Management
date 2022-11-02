@@ -10,6 +10,7 @@ import (
 
 var getNextIDFunc = pkg.GetNextId
 
+// AddFriend add friend controller
 func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEmail string) error {
 
 	/*

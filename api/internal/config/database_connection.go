@@ -17,6 +17,7 @@ const (
 	host     = "localhost"
 )
 
+// CreateDatabaseConnection create database connection
 func CreateDatabaseConnection() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user =%s "+
 		"password=%s dbname=%s sslmode=disable",
@@ -48,6 +49,8 @@ func CreateDatabaseConnection() error {
 
 	return nil
 }
+
+// GetDatabaseConnection get database connection
 func GetDatabaseConnection() (*gorm.DB, error) {
 	if err := CreateDatabaseConnection(); err != nil {
 		return nil, err
