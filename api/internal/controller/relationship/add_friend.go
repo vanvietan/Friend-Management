@@ -15,7 +15,12 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 	/*
 		TODO: check email valid
 	*/
-
+	errC := pkg.CheckValidEmail(requesterEmail)
+	errC = pkg.CheckValidEmail(addresseeEmail)
+	if errC != nil {
+		log.Printf("error when check valid email %v,", errC)
+		return errC
+	}
 	//check email
 	emailRequester, err := i.userRepo.FindUserByEmail(ctx, requesterEmail)
 	if err != nil {
