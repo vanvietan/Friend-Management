@@ -5,7 +5,7 @@ CREATE TABLE "users" (
 --                          "updated_at" timestamp
 );
 
-CREATE TABLE "relationship" (
+CREATE TABLE "relationships" (
                                 "id" bigint PRIMARY KEY NOT NULL,
                                 "requester_id" bigint NOT NULL,
                                 "addressee_id" bigint NOT NULL,
@@ -14,6 +14,6 @@ CREATE TABLE "relationship" (
 --                                 "updated_at" timestamp
 );
 
-ALTER TABLE "relationship" ADD FOREIGN KEY ("requester_id") REFERENCES "users" ("id");
+ALTER TABLE "relationships" ADD FOREIGN KEY ("requester_id") REFERENCES "users" ("id");
 
-ALTER TABLE "relationship" ADD FOREIGN KEY ("addressee_id") REFERENCES "users" ("id");
+ALTER TABLE "relationships" ADD FOREIGN KEY ("addressee_id") REFERENCES "users" ("id");

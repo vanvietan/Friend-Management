@@ -30,6 +30,17 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 	/*
 		TODO: check Type isBlocked or not
 	*/
+	rela, err3 := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
+	if err3 != nil {
+		log.Printf("error when find relationship %v", err3)
+		return err3
+	}
+	if rela.Type == models.TypeBlocked {
+		return errors.New("requester is blocked")
+	}
+	if rela.Type == models.TypeFriend {
+		return nil
+	}
 
 	var relationship models.Relationship
 	ID, errG := getNextIDFunc()
