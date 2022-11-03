@@ -20,7 +20,7 @@ func toFriendConnectionResponse() FriendConnectionResponse {
 	return FriendConnectionResponse{Success: "true"}
 }
 
-func decode(r *http.Request) (string, string, error) {
+func Decode2Mails(r *http.Request) (string, string, error) {
 	var input FriendConnectionRequest
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return "", "", err
