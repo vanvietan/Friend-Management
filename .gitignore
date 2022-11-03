@@ -705,3 +705,6 @@ vendor/golang.org/x/sys/unix/ztypes_zos_s390x.go
 vendor/github.com/sony/sonyflake/LICENSE
 vendor/github.com/sony/sonyflake/README.md
 vendor/github.com/sony/sonyflake/sonyflake.go
+vendor/github.com/sony/sonyflake/sonyflake.go
+vendor/github.com/sony/sonyflake/README.md
+vendor/github.com/sony/sonyflake/LICENSE

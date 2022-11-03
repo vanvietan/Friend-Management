@@ -7,7 +7,7 @@ import (
 
 // AddFriend function works as a controller for creating friend connection between 2 user emails
 func (h Handler) AddFriend(w http.ResponseWriter, r *http.Request) {
-	requestEmail, addressEmail, err := decode(r)
+	requestEmail, addressEmail, err := Decode2Mails(r)
 	if err != nil {
 		common.ResponseJSON(w, http.StatusBadRequest, common.CommonErrorResponse{
 			Code:        "invalid_request",
@@ -16,6 +16,7 @@ func (h Handler) AddFriend(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	errS := h.RelationshipSvc.AddFriend(r.Context(), requestEmail, addressEmail)
+	errS = h.RelationshipSvc.AddFriend(r.Context(), addressEmail, requestEmail)
 	if errS != nil {
 		common.ResponseJSON(w, http.StatusInternalServerError, common.CommonErrorResponse{
 			Code:        "internal_server_error",
