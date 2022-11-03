@@ -18,6 +18,7 @@ func Init() {
 	}
 }
 
+// GetNextId generate ID when calls
 func GetNextId() (int64, error) {
 	ret, err := sf.NextID()
 	if err != nil {

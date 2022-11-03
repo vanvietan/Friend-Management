@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// AddFriend function works as a controller for creating friend connection between 2 user emails
 func (h Handler) AddFriend(w http.ResponseWriter, r *http.Request) {
 	requestEmail, addressEmail, err := decode(r)
 	if err != nil {

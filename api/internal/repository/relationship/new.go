@@ -18,6 +18,7 @@ type impl struct {
 	gormDB *gorm.DB
 }
 
+// New DI
 func New(gormDB *gorm.DB) Repository {
 	return impl{
 		gormDB: gormDB,

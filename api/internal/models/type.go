@@ -1,5 +1,6 @@
 package models
 
+// Type Enums
 type Type string
 
 const (

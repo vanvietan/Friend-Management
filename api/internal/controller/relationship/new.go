@@ -8,6 +8,7 @@ import (
 
 // Service contains relationship services
 type Service interface {
+	//AddFriend Add friends between 2 emails
 	AddFriend(ctx context.Context, requesterEmail string, addresseeEmail string) error
 }
 
