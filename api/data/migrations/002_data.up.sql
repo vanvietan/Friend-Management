@@ -10,6 +10,8 @@
 INSERT INTO public.users
 (id, email)
 VALUES
+    (97, 'bar@gmail.com'),
+    (98, 'foo@gmail.com'),
     (99, 'an@gmail.com'),
     (100, 'nghia@gmail.com'),
     (101, 'thuy@gmail.com');

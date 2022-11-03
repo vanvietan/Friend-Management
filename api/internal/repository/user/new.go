@@ -10,6 +10,9 @@ import (
 type Repository interface {
 	//FindUserByEmail find user by email
 	FindUserByEmail(ctx context.Context, input string) (models.User, error)
+
+	//FindUserByID find user by its id
+	FindUserByID(ctx context.Context, id int64) (models.User, error)
 }
 type impl struct {
 	gormDB *gorm.DB
