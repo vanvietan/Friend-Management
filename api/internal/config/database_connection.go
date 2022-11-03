@@ -3,9 +3,7 @@ package config
 import (
 	"fmt"
 	"gorm.io/driver/postgres"
-	_ "gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	_ "gorm.io/gorm"
 	"time"
 )
 
@@ -19,11 +17,13 @@ const (
 	host     = "localhost"
 )
 
+// CreateDatabaseConnection create database connection
 func CreateDatabaseConnection() error {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user =%s "+
 		"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	db, err := gorm.Open(postgres.Open(psqlInfo), &gorm.Config{})
+	//db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		return err
 	}
@@ -49,6 +49,8 @@ func CreateDatabaseConnection() error {
 
 	return nil
 }
+
+// GetDatabaseConnection get database connection
 func GetDatabaseConnection() (*gorm.DB, error) {
 	if err := CreateDatabaseConnection(); err != nil {
 		return nil, err

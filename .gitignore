@@ -702,3 +702,6 @@ vendor/golang.org/x/sys/unix/ztypes_openbsd_arm64.go
 vendor/golang.org/x/sys/unix/ztypes_openbsd_mips64.go
 vendor/golang.org/x/sys/unix/ztypes_solaris_amd64.go
 vendor/golang.org/x/sys/unix/ztypes_zos_s390x.go
+vendor/github.com/sony/sonyflake/LICENSE
+vendor/github.com/sony/sonyflake/README.md
+vendor/github.com/sony/sonyflake/sonyflake.go

@@ -1,9 +1,10 @@
 package models
 
+// Type Enums
 type Type string
 
 const (
-	TypeFriend   Type = "FRIEND"
-	TypeBlocked  Type = "BLOCKING"
-	TypeFollowed Type = "FOLLOWING"
+	TypeFriend     Type = "Friend"
+	TypeBlocked    Type = "Blocked"
+	TypeSubscribed Type = "Subscribed"
 )

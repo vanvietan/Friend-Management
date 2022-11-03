@@ -1,19 +1,19 @@
 CREATE TABLE "users" (
                          "id" bigint PRIMARY KEY NOT NULL,
-                         "email" varchar(50) UNIQUE NOT NULL,
-                         "created_at" timestamp,
-                         "updated_at" timestamp
+                         "email" varchar(50) UNIQUE NOT NULL
+--                          "created_at" timestamp,
+--                          "updated_at" timestamp
 );
 
-CREATE TABLE "relationship" (
+CREATE TABLE "relationships" (
                                 "id" bigint PRIMARY KEY NOT NULL,
-                                "requesterID" bigint NOT NULL,
-                                "addresseeID" bigint NOT NULL,
-                                "type" varchar(20),
-                                "created_at" timestamp,
-                                "updated_at" timestamp
+                                "requester_id" bigint NOT NULL,
+                                "addressee_id" bigint NOT NULL,
+                                "type" varchar(20)
+--                                 "created_at" timestamp,
+--                                 "updated_at" timestamp
 );
 
-ALTER TABLE "relationship" ADD FOREIGN KEY ("requesterID") REFERENCES "users" ("id");
+ALTER TABLE "relationships" ADD FOREIGN KEY ("requester_id") REFERENCES "users" ("id");
 
-ALTER TABLE "relationship" ADD FOREIGN KEY ("addresseeID") REFERENCES "users" ("id");
+ALTER TABLE "relationships" ADD FOREIGN KEY ("addressee_id") REFERENCES "users" ("id");
