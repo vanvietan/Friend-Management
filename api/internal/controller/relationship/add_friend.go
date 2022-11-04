@@ -13,22 +13,17 @@ var getNextIDFunc = pkg.GetNextId
 // AddFriend add friend controller
 func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEmail string) error {
 
-	/*
-	 check email valid
-	*/
-	errC := pkg.CheckValidEmail(requesterEmail)
-	errC = pkg.CheckValidEmail(addresseeEmail)
-	if errC != nil {
-		log.Printf("error when check valid email %v,", errC)
-		return errC
+	//check email valid
+	user1, err2 := CheckValidAndFindUser(ctx, requesterEmail, i)
+	if err2 != nil {
+		return err2
 	}
-	//check email
-	emailRequester, err := i.userRepo.FindUserByEmail(ctx, requesterEmail)
-	if err != nil {
-		log.Printf("error when find email %v ", err)
-		return errors.New("can't find requester email")
+	user2, err3 := CheckValidAndFindUser(ctx, addresseeEmail, i)
+	if err3 != nil {
+		return err3
 	}
-	emailAddressee, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
+
+	user2, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
 	if err != nil {
 		log.Printf("error when find email, %v ", err)
 		return errors.New("can't find addressee email")
@@ -36,7 +31,7 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 	/*
 	 check Type isBlocked or not
 	*/
-	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
+	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
 		return errors.New("requester is blocked")
 	}
@@ -44,16 +39,27 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 		return nil
 	}
 
+	err4 := createFriendRelationship(ctx, user1, user2, i)
+	if err4 != nil {
+		return err4
+	}
+	err5 := createFriendRelationship(ctx, user2, user1, i)
+	if err5 != nil {
+		return err5
+	}
+	return nil
+}
+
+func createFriendRelationship(ctx context.Context, user1 models.User, user2 models.User, i impl) error {
 	var relationship models.Relationship
 	ID, errG := getNextIDFunc()
 	if errG != nil {
 		log.Printf("error when generate ID %v ", errG)
 		return errG
 	}
-
 	relationship.ID = ID
-	relationship.RequesterID = emailRequester.ID
-	relationship.AddresseeID = emailAddressee.ID
+	relationship.RequesterID = user1.ID
+	relationship.AddresseeID = user2.ID
 	relationship.Type = models.TypeFriend
 
 	_, errR := i.relationshipRepo.CreateRelationship(ctx, relationship)

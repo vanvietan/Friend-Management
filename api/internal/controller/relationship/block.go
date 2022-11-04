@@ -12,11 +12,11 @@ import (
 // Block to block target by requester
 func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail string) error {
 	//check email valid
-	user1, err3 := checkValidAndFindUser(ctx, requesterEmail, i)
+	user1, err3 := CheckValidAndFindUser(ctx, requesterEmail, i)
 	if err3 != nil {
 		return err3
 	}
-	user2, err4 := checkValidAndFindUser(ctx, addresseeEmail, i)
+	user2, err4 := CheckValidAndFindUser(ctx, addresseeEmail, i)
 	if err4 != nil {
 		return err4
 	}
@@ -66,7 +66,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	return nil
 }
 
-func checkValidAndFindUser(ctx context.Context, email string, i impl) (models.User, error) {
+func CheckValidAndFindUser(ctx context.Context, email string, i impl) (models.User, error) {
 	errC := pkg.CheckValidEmail(email)
 	if errC != nil {
 		log.Printf("error when check valid email %v,", errC)
