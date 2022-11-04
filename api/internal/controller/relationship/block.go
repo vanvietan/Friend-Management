@@ -20,12 +20,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	if err4 != nil {
 		return err4
 	}
-
-	user2, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
-	if err != nil {
-		log.Printf("error when find email, %v ", err)
-		return errors.New("can't find addressee email")
-	}
+	
 	//check relationship
 	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
