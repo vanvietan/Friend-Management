@@ -4,37 +4,28 @@ import (
 	"context"
 	"errors"
 	"fm/api/internal/models"
-	"fm/api/internal/pkg"
 	log "github.com/sirupsen/logrus"
 )
 
 // Subscribe subscribe a target from requester
 func (i impl) Subscribe(ctx context.Context, requesterEmail string, addresseeEmail string) error {
 	//check email valid
-	errC := pkg.CheckValidEmail(requesterEmail)
-	errC = pkg.CheckValidEmail(addresseeEmail)
-	if errC != nil {
-		log.Printf("error when check valid email %v,", errC)
-		return errC
+	user1, err2 := CheckValidAndFindUser(ctx, requesterEmail, i)
+	if err2 != nil {
+		return err2
 	}
-	//check email
-	emailRequester, err := i.userRepo.FindUserByEmail(ctx, requesterEmail)
-	if err != nil {
-		log.Printf("error when find email %v ", err)
-		return errors.New("can't find requester email")
+	user2, err3 := CheckValidAndFindUser(ctx, addresseeEmail, i)
+	if err3 != nil {
+		return err3
 	}
-	emailAddressee, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
-	if err != nil {
-		log.Printf("error when find email, %v ", err)
-		return errors.New("can't find addressee email")
-	}
+
 	//check relationship
-	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
+	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
-		return errors.New("requester is blocked")
+		return errors.New(requesterEmail + " is blocked")
 	}
 	if rela.Type == models.TypeFriend {
-		return errors.New("addressee is your friend")
+		return errors.New(addresseeEmail + " is already your friend")
 	}
 	//create relationship
 	var relationship models.Relationship
@@ -44,8 +35,8 @@ func (i impl) Subscribe(ctx context.Context, requesterEmail string, addresseeEma
 		return errG
 	}
 	relationship.ID = ID
-	relationship.RequesterID = emailRequester.ID
-	relationship.AddresseeID = emailAddressee.ID
+	relationship.RequesterID = user1.ID
+	relationship.AddresseeID = user2.ID
 	relationship.Type = models.TypeSubscribed
 
 	_, errR := i.relationshipRepo.CreateRelationship(ctx, relationship)

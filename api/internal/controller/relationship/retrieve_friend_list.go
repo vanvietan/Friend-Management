@@ -18,7 +18,7 @@ func (i impl) FriendList(ctx context.Context, input string) ([]models.User, erro
 	user, errU := i.userRepo.FindUserByEmail(ctx, input)
 	if errU != nil {
 		log.Printf("error when find email, %v ", errU)
-		return nil, errors.New("cant find requester email")
+		return nil, errors.New("cant find " + input + " email")
 	}
 
 	listUser, errR := i.relationshipRepo.FindFriendList(ctx, user.ID)

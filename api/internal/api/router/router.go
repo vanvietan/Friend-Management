@@ -40,5 +40,6 @@ func (mr MasterRoute) initRelationshipRoutes() {
 		r.Post("/friend-list", mr.Handler.RelationshipHandler.RetrieveFriendList)
 		r.Post("/common-friend", mr.Handler.RelationshipHandler.RetrieveCommonFriend)
 		r.Post("/subscribe", mr.Handler.RelationshipHandler.Subscribe)
+		r.Post("/block", mr.Handler.RelationshipHandler.Block)
 	})
 }

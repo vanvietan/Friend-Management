@@ -16,6 +16,9 @@ type Repository interface {
 
 	//FindFriendList find a list of relationship friend
 	FindFriendList(ctx context.Context, id int64) ([]models.User, error)
+
+	//UpdateRelationship update a relationship
+	UpdateRelationship(ctx context.Context, relationship models.Relationship) (models.Relationship, error)
 }
 type impl struct {
 	gormDB *gorm.DB
