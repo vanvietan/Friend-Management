@@ -37,7 +37,6 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 		TODO: check Type isBlocked or not
 	*/
 	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
-
 	if rela.Type == models.TypeBlocked {
 		return errors.New("requester is blocked")
 	}
