@@ -22,10 +22,10 @@ func (i impl) Subscribe(ctx context.Context, requesterEmail string, addresseeEma
 	//check relationship
 	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
-		return errors.New("requester is blocked")
+		return errors.New(requesterEmail + " is blocked")
 	}
 	if rela.Type == models.TypeFriend {
-		return errors.New("addressee is your friend")
+		return errors.New(addresseeEmail + " is already your friend")
 	}
 	//create relationship
 	var relationship models.Relationship
