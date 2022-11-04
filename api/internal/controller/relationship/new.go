@@ -20,6 +20,9 @@ type Service interface {
 
 	//Subscribe subscribe a target from requester
 	Subscribe(ctx context.Context, requester string, addressee string) error
+
+	//Block to block a target from requester
+	Block(ctx context.Context, requester string, addressee string) error
 }
 
 type impl struct {
