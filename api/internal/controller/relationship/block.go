@@ -57,7 +57,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		return nil
 	}
 
-	//create relationship1
+	//create blocking relationship if not existed
 	err2 := createBlockRelationship(ctx, user1, user2, i)
 	err2 = createBlockRelationship(ctx, user2, user1, i)
 	if err2 != nil {
@@ -66,6 +66,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	return nil
 }
 
+// CheckValidAndFindUser check email validation and find its user in db
 func CheckValidAndFindUser(ctx context.Context, email string, i impl) (models.User, error) {
 	errC := pkg.CheckValidEmail(email)
 	if errC != nil {
