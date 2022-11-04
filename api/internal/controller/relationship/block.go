@@ -20,13 +20,13 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	if err4 != nil {
 		return err4
 	}
-	
+
 	//check relationship
 	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
 		return nil
 	}
-
+	//block if type is subscribe
 	if rela.Type == models.TypeSubscribed {
 		rela.Type = models.TypeBlocked
 		_, errT := i.relationshipRepo.UpdateRelationship(ctx, rela)
@@ -37,6 +37,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		return nil
 	}
 
+	//block if type is friend
 	if rela.Type == models.TypeFriend {
 		rela.Type = models.TypeBlocked
 		_, errT := i.relationshipRepo.UpdateRelationship(ctx, rela)
