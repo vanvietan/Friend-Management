@@ -33,6 +33,11 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	if rela.Type == models.TypeBlocked {
 		return nil
 	}
+	/*
+		TODO: bugs
+			blocking still add friends, subscribe, etc
+	*/
+
 	//create relationship
 	var relationship models.Relationship
 	ID, errG := getNextIDFunc()
