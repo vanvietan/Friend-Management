@@ -34,6 +34,10 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 			log.Printf("error when update new relationship %v ", errT)
 			return errT
 		}
+		err5 := createBlockRelationship(ctx, user2, user1, i)
+		if err5 != nil {
+			return err5
+		}
 		return nil
 	}
 
