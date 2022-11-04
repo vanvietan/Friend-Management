@@ -15,7 +15,10 @@ type Repository interface {
 	FindRelationshipWithTwoEmail(ctx context.Context, requesterID int64, addresseeID int64) (models.Relationship, error)
 
 	//FindFriendList find a list of relationship friend
-	FindFriendList(ctx context.Context, id int64) ([]models.Relationship, error)
+	FindFriendList(ctx context.Context, id int64) ([]models.User, error)
+
+	//FindCommonFriend find common friend list
+	FindCommonFriend(ctx context.Context, id1 int64, id2 int64) ([]models.Relationship, error)
 }
 type impl struct {
 	gormDB *gorm.DB

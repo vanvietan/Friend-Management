@@ -14,6 +14,9 @@ type Service interface {
 
 	//FriendList retrieve friend list
 	FriendList(ctx context.Context, input string) ([]models.User, error)
+
+	//CommonFriend retrieve common friend list
+	CommonFriend(ctx context.Context, requesterEmail string, addresseeEmail string) ([]models.User, error)
 }
 
 type impl struct {
