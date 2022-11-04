@@ -14,7 +14,7 @@ var getNextIDFunc = pkg.GetNextId
 func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEmail string) error {
 
 	/*
-		TODO: check email valid
+	 check email valid
 	*/
 	errC := pkg.CheckValidEmail(requesterEmail)
 	errC = pkg.CheckValidEmail(addresseeEmail)
@@ -34,7 +34,7 @@ func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEma
 		return errors.New("can't find addressee email")
 	}
 	/*
-		TODO: check Type isBlocked or not
+	 check Type isBlocked or not
 	*/
 	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
 	if rela.Type == models.TypeBlocked {

@@ -12,25 +12,22 @@ import (
 // Block to block target by requester
 func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail string) error {
 	//check email valid
-	errC := pkg.CheckValidEmail(requesterEmail)
-	errC = pkg.CheckValidEmail(addresseeEmail)
-	if errC != nil {
-		log.Printf("error when check valid email %v,", errC)
-		return errC
+	user1, err3 := checkValidAndFindUser(ctx, requesterEmail, i)
+	if err3 != nil {
+		return err3
 	}
-	//check email
-	emailRequester, err := i.userRepo.FindUserByEmail(ctx, requesterEmail)
-	if err != nil {
-		log.Printf("error when find email %v ", err)
-		return errors.New("can't find requester email")
+	user2, err4 := checkValidAndFindUser(ctx, addresseeEmail, i)
+	if err4 != nil {
+		return err4
 	}
-	emailAddressee, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
+
+	user2, err := i.userRepo.FindUserByEmail(ctx, addresseeEmail)
 	if err != nil {
 		log.Printf("error when find email, %v ", err)
 		return errors.New("can't find addressee email")
 	}
 	//check relationship
-	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, emailRequester.ID, emailAddressee.ID)
+	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
 		return nil
 	}
@@ -60,7 +57,31 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		return nil
 	}
 
-	//create relationship
+	//create relationship1
+	err2 := createBlockRelationship(ctx, user1, user2, i)
+	err2 = createBlockRelationship(ctx, user2, user1, i)
+	if err2 != nil {
+		return err2
+	}
+	return nil
+}
+
+func checkValidAndFindUser(ctx context.Context, email string, i impl) (models.User, error) {
+	errC := pkg.CheckValidEmail(email)
+	if errC != nil {
+		log.Printf("error when check valid email %v,", errC)
+		return models.User{}, errC
+	}
+	//check email
+	user, err := i.userRepo.FindUserByEmail(ctx, email)
+	if err != nil {
+		log.Printf("error when find email %v ", err)
+		return models.User{}, errors.New("can't find " + email + " email")
+	}
+	return user, nil
+}
+
+func createBlockRelationship(ctx context.Context, user1 models.User, user2 models.User, i impl) error {
 	var relationship models.Relationship
 	ID, errG := getNextIDFunc()
 	if errG != nil {
@@ -68,8 +89,8 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		return errG
 	}
 	relationship.ID = ID
-	relationship.RequesterID = emailRequester.ID
-	relationship.AddresseeID = emailAddressee.ID
+	relationship.RequesterID = user1.ID
+	relationship.AddresseeID = user2.ID
 	relationship.Type = models.TypeBlocked
 
 	_, errR := i.relationshipRepo.CreateRelationship(ctx, relationship)
