@@ -11,13 +11,13 @@ type FriendConnectionRequest struct {
 	Friends []string `json:"friends"`
 }
 
-// FriendConnectionResponse struct used when the service return a list of friend emails
-type FriendConnectionResponse struct {
+// ConnectionResponse struct used when the service return a list of friend emails
+type ConnectionResponse struct {
 	Success string `json:"success"`
 }
 
-func toFriendConnectionResponse() FriendConnectionResponse {
-	return FriendConnectionResponse{Success: "true"}
+func toConnectionResponse() ConnectionResponse {
+	return ConnectionResponse{Success: "true"}
 }
 
 func Decode2Mails(r *http.Request) (string, string, error) {

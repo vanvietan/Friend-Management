@@ -17,6 +17,9 @@ type Service interface {
 
 	//CommonFriend retrieve common friend list
 	CommonFriend(ctx context.Context, requesterEmail string, addresseeEmail string) ([]models.User, error)
+
+	//Subscribe subscribe a target from requester
+	Subscribe(ctx context.Context, requester string, addressee string) error
 }
 
 type impl struct {
