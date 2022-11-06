@@ -41,5 +41,6 @@ func (mr MasterRoute) initRelationshipRoutes() {
 		r.Post("/common-friend", mr.Handler.RelationshipHandler.RetrieveCommonFriend)
 		r.Post("/subscribe", mr.Handler.RelationshipHandler.Subscribe)
 		r.Post("/block", mr.Handler.RelationshipHandler.Block)
+		r.Post("/notification-list", mr.Handler.RelationshipHandler.GetNotificationList)
 	})
 }
