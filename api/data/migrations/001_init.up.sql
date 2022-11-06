@@ -1,12 +1,12 @@
-CREATE TABLE "users" (
+CREATE TABLE IF NOT EXISTS "users" (
                          "id" bigint PRIMARY KEY NOT NULL,
-                         "email" varchar(50) UNIQUE NOT NULL
+                         "email" varchar(30) UNIQUE NOT NULL
 );
 
-CREATE TABLE "relationships" (
+CREATE TABLE IF NOT EXISTS "relationships" (
                                 "id" bigint PRIMARY KEY NOT NULL,
                                 "requester_id" bigint NOT NULL,
-                                "addressee_id" bigint NOT NULL,
+                                "addressee_id" bigint NOT NULL CHECK(requester_id != addressee_id),
                                 "type" varchar(20)
 );
 

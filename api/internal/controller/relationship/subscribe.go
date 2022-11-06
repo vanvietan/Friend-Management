@@ -9,6 +9,9 @@ import (
 
 // Subscribe subscribe a target from requester
 func (i impl) Subscribe(ctx context.Context, requesterEmail string, addresseeEmail string) error {
+	if requesterEmail == addresseeEmail {
+		return errors.New("can't subscribe to yourself")
+	}
 	//check email valid
 	user1, err2 := CheckValidAndFindUser(ctx, requesterEmail, i)
 	if err2 != nil {

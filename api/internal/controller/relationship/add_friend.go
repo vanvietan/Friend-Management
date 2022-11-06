@@ -12,7 +12,9 @@ var getNextIDFunc = pkg.GetNextId
 
 // AddFriend add friend controller
 func (i impl) AddFriend(ctx context.Context, requesterEmail string, addresseeEmail string) error {
-
+	if requesterEmail == addresseeEmail {
+		return errors.New("can't add friend to yourself")
+	}
 	//check email valid
 	user1, err2 := CheckValidAndFindUser(ctx, requesterEmail, i)
 	if err2 != nil {

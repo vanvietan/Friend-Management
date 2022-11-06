@@ -11,6 +11,9 @@ import (
 
 // Block to block target by requester
 func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail string) error {
+	if requesterEmail == addresseeEmail {
+		return errors.New("can't block yourself")
+	}
 	//check email valid
 	user1, err3 := CheckValidAndFindUser(ctx, requesterEmail, i)
 	if err3 != nil {
