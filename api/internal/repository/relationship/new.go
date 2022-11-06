@@ -19,6 +19,9 @@ type Repository interface {
 
 	//UpdateRelationship update a relationship
 	UpdateRelationship(ctx context.Context, relationship models.Relationship) (models.Relationship, error)
+
+	//FindNotificationList get a list of eligible receiving notifications from sender
+	FindNotificationList(ctx context.Context, id int64) ([]models.User, error)
 }
 type impl struct {
 	gormDB *gorm.DB
