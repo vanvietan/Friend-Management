@@ -1,9 +1,9 @@
-CREATE TABLE "users" (
+CREATE TABLE "users" IF NOT EXISTS(
                          "id" bigint PRIMARY KEY NOT NULL,
-                         "email" varchar(50) UNIQUE NOT NULL
+                         "email" varchar(30) UNIQUE NOT NULL
 );
 
-CREATE TABLE "relationships" (
+CREATE TABLE "relationships" IF NOT EXISTS(
                                 "id" bigint PRIMARY KEY NOT NULL,
                                 "requester_id" bigint NOT NULL,
                                 "addressee_id" bigint NOT NULL,
