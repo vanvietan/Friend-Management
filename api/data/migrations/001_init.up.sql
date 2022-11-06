@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "relationships" (
                                 "id" bigint PRIMARY KEY NOT NULL,
                                 "requester_id" bigint NOT NULL,
-                                "addressee_id" bigint NOT NULL,
+                                "addressee_id" bigint NOT NULL CHECK(requester_id != addressee_id),
                                 "type" varchar(20)
 );
 
