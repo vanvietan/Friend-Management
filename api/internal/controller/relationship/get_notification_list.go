@@ -30,15 +30,27 @@ func (i impl) GetNotificationList(ctx context.Context, sender string, text strin
 			u, err2 := i.userRepo.FindUserByEmail(ctx, t)
 			if err2 != nil {
 				log.Printf("error when find email %v ", err)
-				return nil, errors.New("can't find " + u.Email + " email")
+				return nil, errors.New("can't find " + t + " email")
 			}
 			rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user.ID, u.ID)
-			if rela.Type != models.TypeBlocked {
+			if rela.Type != models.TypeBlocked && u.ID != user.ID {
 				mentionList = append(mentionList, u)
 			}
 		}
 	}
-	fmt.Println(mentionList)
+	notiList := appendIfMissing(list, mentionList)
+	fmt.Println(notiList)
 
-	return list, nil
+	return notiList, nil
+}
+func appendIfMissing(slice []models.User, mention []models.User) []models.User {
+	for _, ele := range mention {
+		for _, m := range slice {
+			if ele.ID == m.ID {
+				return slice
+			}
+		}
+		slice = append(slice, ele)
+	}
+	return slice
 }
