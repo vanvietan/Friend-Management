@@ -38,12 +38,12 @@ func (i impl) GetNotificationList(ctx context.Context, sender string, text strin
 			}
 		}
 	}
-	notiList := appendIfMissing(list, mentionList)
+	notiList := appendUniqueSlice(list, mentionList)
 	fmt.Println(notiList)
 
 	return notiList, nil
 }
-func appendIfMissing(slice []models.User, mention []models.User) []models.User {
+func appendUniqueSlice(slice []models.User, mention []models.User) []models.User {
 	for _, ele := range mention {
 		for _, m := range slice {
 			if ele.ID == m.ID {
