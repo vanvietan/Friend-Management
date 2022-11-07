@@ -10,7 +10,7 @@ func (i impl) FindUserByID(ctx context.Context, id int64) (models.User, error) {
 	user := models.User{}
 	tx := i.gormDB.First(&user, id)
 	if tx.Error != nil {
-		return models.User{}, nil
+		return models.User{}, tx.Error
 	}
 	return user, nil
 }
