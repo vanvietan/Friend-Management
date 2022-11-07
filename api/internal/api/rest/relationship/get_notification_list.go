@@ -16,7 +16,7 @@ func (h Handler) GetNotificationList(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	emails, errS := h.RelationshipSvc.GetNotificationList(r.Context(), sender, text)
+	emails, errS := h.RelationshipSvc.NotificationList(r.Context(), sender, text)
 	if errS != nil {
 		common.ResponseJSON(w, http.StatusInternalServerError, common.CommonErrorResponse{
 			Code:        "invalid_request",

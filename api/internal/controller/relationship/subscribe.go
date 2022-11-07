@@ -9,6 +9,7 @@ import (
 
 // Subscribe subscribe a target from requester
 func (i impl) Subscribe(ctx context.Context, requesterEmail string, addresseeEmail string) error {
+	//can't subscribe to self
 	if requesterEmail == addresseeEmail {
 		return errors.New("can't subscribe to yourself")
 	}

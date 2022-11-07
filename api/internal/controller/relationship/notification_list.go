@@ -5,13 +5,12 @@ import (
 	"errors"
 	"fm/api/internal/models"
 	"fm/api/internal/pkg"
-	"fmt"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
-// GetNotificationList get notification list
-func (i impl) GetNotificationList(ctx context.Context, sender string, text string) ([]models.User, error) {
+// NotificationList get notification list
+func (i impl) NotificationList(ctx context.Context, sender string, text string) ([]models.User, error) {
 	user, err := CheckValidAndFindUser(ctx, sender, i)
 	if err != nil {
 		return nil, err
@@ -39,7 +38,6 @@ func (i impl) GetNotificationList(ctx context.Context, sender string, text strin
 		}
 	}
 	notiList := appendUniqueSlice(list, mentionList)
-	fmt.Println(notiList)
 
 	return notiList, nil
 }
