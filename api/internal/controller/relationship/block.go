@@ -10,6 +10,7 @@ import (
 
 // Block to block target by requester
 func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail string) error {
+	//can't block self
 	if requesterEmail == addresseeEmail {
 		return errors.New("can't block yourself")
 	}
@@ -24,14 +25,29 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	}
 
 	//check relationship
-	rela, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
+	rela, err := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user1.ID, user2.ID)
 	if rela.Type == models.TypeBlocked {
 		return nil
 	}
-	/*
-		TODO BUG: blocking is a update make a new record
-	*/
-	//block if type is subscribe
+	//blocking if A subscribed B and B block A
+	if err != nil {
+		rela2, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, user2.ID, user1.ID)
+		if rela2.Type == models.TypeSubscribed {
+			rela2.Type = models.TypeBlocked
+			_, errT := i.relationshipRepo.UpdateRelationship(ctx, rela2)
+			if errT != nil {
+				log.Printf("error when update new relationship %v ", errT)
+				return errT
+			}
+		}
+		err5 := createBlockRelationship(ctx, user1, user2, i)
+		if err5 != nil {
+			return err5
+		}
+		return nil
+	}
+
+	//block if A subscribed B then A block B
 	if rela.Type == models.TypeSubscribed {
 		rela.Type = models.TypeBlocked
 		_, errT := i.relationshipRepo.UpdateRelationship(ctx, rela)
@@ -46,7 +62,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		return nil
 	}
 
-	//block if type is friend
+	//blocking if A friend of B and A block B or B block A
 	if rela.Type == models.TypeFriend {
 		rela.Type = models.TypeBlocked
 		_, errT := i.relationshipRepo.UpdateRelationship(ctx, rela)
@@ -61,7 +77,7 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		return nil
 	}
 
-	//create blocking relationship if not existed
+	//create blocking relationship if A and B have no relation
 	err2 := createBlockRelationship(ctx, user1, user2, i)
 	err2 = createBlockRelationship(ctx, user2, user1, i)
 	if err2 != nil {
