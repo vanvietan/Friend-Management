@@ -24,8 +24,8 @@ type Service interface {
 	//Block to block a target from requester
 	Block(ctx context.Context, requester string, addressee string) error
 
-	//GetNotificationList get notification list
-	GetNotificationList(ctx context.Context, sender string, text string) ([]models.User, error)
+	//NotificationList get notification list
+	NotificationList(ctx context.Context, sender string, text string) ([]models.User, error)
 }
 
 type impl struct {

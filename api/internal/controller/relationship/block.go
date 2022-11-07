@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fm/api/internal/models"
 	"fm/api/internal/pkg"
-	"fmt"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -29,6 +28,9 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 	if rela.Type == models.TypeBlocked {
 		return nil
 	}
+	/*
+		TODO BUG: blocking is a update make a new record
+	*/
 	//block if type is subscribe
 	if rela.Type == models.TypeSubscribed {
 		rela.Type = models.TypeBlocked
@@ -50,7 +52,6 @@ func (i impl) Block(ctx context.Context, requesterEmail string, addresseeEmail s
 		_, errT := i.relationshipRepo.UpdateRelationship(ctx, rela)
 		//block another side of friendship,
 		rela2, _ := i.relationshipRepo.FindRelationshipWithTwoEmail(ctx, rela.AddresseeID, rela.RequesterID)
-		fmt.Println(rela2)
 		rela2.Type = models.TypeBlocked
 		_, errT = i.relationshipRepo.UpdateRelationship(ctx, rela2)
 		if errT != nil {
