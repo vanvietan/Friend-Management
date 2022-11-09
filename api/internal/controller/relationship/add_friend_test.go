@@ -182,17 +182,17 @@ func TestAddFriend(t *testing.T) {
 	for s, tc := range tcs {
 		t.Run(s, func(t *testing.T) {
 			//GIVEN
-			rlRepo := new(mocksR.Repository)
+			relaRepo := new(mocksR.Repository)
 			userRepo := new(mocksU.Repository)
 			userRepo.On("FindUserByEmail", mock.Anything, tc.addFriend.mockRequesterEmail).
 				Return(tc.addFriend.mockOutUser1, tc.addFriend.mockErrFind)
 			userRepo.On("FindUserByEmail", mock.Anything, tc.addFriend.mockAddresseeEmail).
 				Return(tc.addFriend.mockOutUser2, tc.addFriend.mockErrFind)
-			rlRepo.On("FindRelationshipWithTwoEmail", mock.Anything, tc.addFriend.mockOutUser1.ID, tc.addFriend.mockOutUser2.ID).
+			relaRepo.On("FindRelationshipWithTwoEmail", mock.Anything, tc.addFriend.mockOutUser1.ID, tc.addFriend.mockOutUser2.ID).
 				Return(tc.addFriend.mockOutFindRelationship, tc.addFriend.mockErrFindRelationship)
-			rlRepo.On("CreateRelationship", mock.Anything, tc.addFriend.mockInCreateRelationship1).
+			relaRepo.On("CreateRelationship", mock.Anything, tc.addFriend.mockInCreateRelationship1).
 				Return(tc.addFriend.mockOutCreateRelationship1, tc.addFriend.mockErrCreate)
-			rlRepo.On("CreateRelationship", mock.Anything, tc.addFriend.mockInCreateRelationship2).
+			relaRepo.On("CreateRelationship", mock.Anything, tc.addFriend.mockInCreateRelationship2).
 				Return(tc.addFriend.mockOutCreateRelationship2, tc.addFriend.mockErrCreate)
 			getNextIDFunc = func() (int64, error) {
 				if s == "fail: generate id fail" {
@@ -204,7 +204,7 @@ func TestAddFriend(t *testing.T) {
 				getNextIDFunc = pkg.GetNextId
 			}()
 			//WHEN
-			svc := New(rlRepo, userRepo)
+			svc := New(relaRepo, userRepo)
 			err := svc.AddFriend(context.Background(), tc.givenRequesterEmail, tc.givenAddresseeEmail)
 
 			//THEN
