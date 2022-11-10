@@ -62,6 +62,104 @@ func TestSubscribe(t *testing.T) {
 			givenRequesterEmail: "van1@gmail.com",
 			givenAddresseeEmail: "van2@gmail.com",
 		},
+		"fail: can't subscribe to yourself": {
+			givenAddresseeEmail: "van1@gmail.com",
+			givenRequesterEmail: "van1@gmail.com",
+			expErr:              errors.New("can't subscribe to yourself"),
+		},
+		"fail: invalid email address": {
+			givenAddresseeEmail: "van2@gmail.com",
+			givenRequesterEmail: "@@gmail.com",
+			expErr:              errors.New("invalid email address"),
+		},
+		"fail: error Check": {
+			testSubscribe: testSubscribe{
+				mockInRequesterEmail: "van10@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutRequester:     models.User{},
+				mockOutAddressee: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockCheckErr: errors.New("something wrong"),
+			},
+			givenRequesterEmail: "van10@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+			expErr:              errors.New("can't find van10@gmail.com email"),
+		},
+		"fail: already friend": {
+			testSubscribe: testSubscribe{
+				mockInRequesterEmail: "van1@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutRequester: models.User{
+					ID:    101,
+					Email: "van1@gmail.com",
+				},
+				mockOutAddressee: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockFindRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Friend",
+				},
+			},
+			givenRequesterEmail: "van1@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+			expErr:              errors.New("van2@gmail.com is already your friend"),
+		},
+		"fail: requester blocked": {
+			testSubscribe: testSubscribe{
+				mockInRequesterEmail: "van1@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutRequester: models.User{
+					ID:    101,
+					Email: "van1@gmail.com",
+				},
+				mockOutAddressee: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockFindRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Blocked",
+				},
+			},
+			givenRequesterEmail: "van1@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+			expErr:              errors.New("van1@gmail.com is blocked"),
+		},
+		"fail: error from repo": {
+			testSubscribe: testSubscribe{
+				mockInRequesterEmail: "van1@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutRequester: models.User{
+					ID:    101,
+					Email: "van1@gmail.com",
+				},
+				mockOutAddressee: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockFindRelationship:    models.Relationship{},
+				mockFindRelationshipErr: errors.New("record not found"),
+				mockInCreateRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Subscribed",
+				},
+				mockOutCreateRelationship: models.Relationship{},
+				mockCreateRelationshipErr: errors.New("something wrong"),
+			},
+			givenRequesterEmail: "van1@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+			expErr:              errors.New("something wrong"),
+		},
 	}
 	for s, tc := range tcs {
 		t.Run(s, func(t *testing.T) {
