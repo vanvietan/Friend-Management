@@ -37,6 +37,9 @@ func DecodeAEmail(r *http.Request) (string, error) {
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return "", errors.New("invalid email request")
 	}
+	if input.Email == "" {
+		return "", errors.New("invalid email request")
+	}
 	return input.Email, nil
 }
 
