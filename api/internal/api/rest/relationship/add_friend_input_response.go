@@ -25,7 +25,7 @@ func Decode2Mails(r *http.Request) (string, string, error) {
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
 		return "", "", err
 	}
-	if len(input.Friends) != 2 {
+	if len(input.Friends) < 2 {
 		return "", "", errors.New("need 2 emails")
 	}
 	return input.Friends[0], input.Friends[1], nil

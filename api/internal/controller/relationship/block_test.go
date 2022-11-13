@@ -50,6 +50,7 @@ func TestBlock(t *testing.T) {
 					ID:    102,
 					Email: "van2@gmail.com",
 				},
+				mockFindRelationshipWithTwoEmailErr: errors.New("something wrong"),
 				mockInCreateRelationship1: models.Relationship{
 					ID:          1,
 					AddresseeID: 102,
@@ -70,6 +71,127 @@ func TestBlock(t *testing.T) {
 				},
 				mockOutCreateRelationship2: models.Relationship{
 					ID:          2,
+					AddresseeID: 101,
+					RequesterID: 102,
+					Type:        "Blocked",
+				},
+			},
+			givenRequesterEmail: "van1@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+		},
+		"fail: can't block self": {
+			givenAddresseeEmail: "van1@gmail.com",
+			givenRequesterEmail: "van1@gmail.com",
+			expErr:              errors.New("can't block yourself"),
+		},
+		"fail: invalid email address": {
+			givenRequesterEmail: "@@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+			expErr:              errors.New("invalid email address"),
+		},
+		"fail: error findUser": {
+			block: block{
+				mockInRequesterEmail: "van1@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutFindUserByEmail1: models.User{
+					ID:    101,
+					Email: "van1@gmail.com",
+				},
+				mockOutFindUserByEmail2: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockFindUserByEmailErr: errors.New("something wrong"),
+			},
+			givenRequesterEmail: "van1@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+			expErr:              errors.New("can't find van1@gmail.com email"),
+		},
+		"success:A subscribed B and B block A": {
+			block: block{
+				mockInRequesterEmail: "van1@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutFindUserByEmail1: models.User{
+					ID:    101,
+					Email: "van1@gmail.com",
+				},
+				mockOutFindUserByEmail2: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockFindRelationshipWithTwoEmailErr: errors.New("something"),
+				mockOutFindRelationshipWithTwoEmail2: models.Relationship{
+					ID:          1,
+					AddresseeID: 101,
+					RequesterID: 102,
+					Type:        "Subscribed",
+				},
+				mockInUpdateRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 101,
+					RequesterID: 102,
+					Type:        "Blocked",
+				},
+				mockOutUpdateRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 101,
+					RequesterID: 102,
+					Type:        "Blocked",
+				},
+				mockInCreateRelationship1: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Blocked",
+				},
+				mockOutCreateRelationship1: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Blocked",
+				},
+			},
+			givenRequesterEmail: "van1@gmail.com",
+			givenAddresseeEmail: "van2@gmail.com",
+		},
+		"success: A subscribed B then A block B": {
+			block: block{
+				mockInRequesterEmail: "van1@gmail.com",
+				mockInAddresseeEmail: "van2@gmail.com",
+				mockOutFindUserByEmail1: models.User{
+					ID:    101,
+					Email: "van1@gmail.com",
+				},
+				mockOutFindUserByEmail2: models.User{
+					ID:    102,
+					Email: "van2@gmail.com",
+				},
+				mockOutFindRelationshipWithTwoEmail1: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Subscribed",
+				},
+				mockInUpdateRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Blocked",
+				},
+				mockOutUpdateRelationship: models.Relationship{
+					ID:          1,
+					AddresseeID: 102,
+					RequesterID: 101,
+					Type:        "Blocked",
+				},
+				mockInCreateRelationship2: models.Relationship{
+					ID:          1,
+					AddresseeID: 101,
+					RequesterID: 102,
+					Type:        "Blocked",
+				},
+				mockOutCreateRelationship2: models.Relationship{
+					ID:          1,
 					AddresseeID: 101,
 					RequesterID: 102,
 					Type:        "Blocked",
