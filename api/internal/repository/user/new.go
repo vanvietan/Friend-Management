@@ -13,6 +13,9 @@ type Repository interface {
 
 	//FindUserByID find user by its id
 	FindUserByID(ctx context.Context, id int64) (models.User, error)
+
+	//AddUser add a user
+	AddUser(ctx context.Context, user models.User) (models.User, error)
 }
 type impl struct {
 	gormDB *gorm.DB
