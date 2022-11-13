@@ -31,7 +31,9 @@ func (mr MasterRoute) initRoutes() {
 }
 
 func (mr MasterRoute) initUserRoutes() {
-
+	mr.Router.Group(func(r chi.Router) {
+		r.Post("/add-user", mr.Handler.UserHandler.AddUser)
+	})
 }
 
 func (mr MasterRoute) initRelationshipRoutes() {
